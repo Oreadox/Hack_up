@@ -1,0 +1,33 @@
+# encoding: utf-8
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_httpauth import HTTPTokenAuth
+from flask_restful import Api
+from flask_cors import CORS
+from flask_mail import Mail
+from flask_wtf import CSRFProtect
+from . import config
+
+app = Flask(__name__)
+app.config.from_object(config)
+db = SQLAlchemy(app)
+auth = HTTPTokenAuth()
+CORS(app)
+api = Api(app)
+mail=Mail(app)
+CSRFProtect(app)
+
+from app.models import User
+from flask import g
+
+@app.before_request
+def before_request():
+    g.error= ''
+
+@auth.verify_token
+def verify_token(token):
+    user = User.verify_auth_token(token)
+    if not user:
+        return False
+    g.user = user
+    return True
