@@ -60,11 +60,8 @@ class ChangePassword(Resource):
             return fail_msg(msg='输入错误！')
         if g.error:
             return g.error
-        user = User.query.filter_by(username=form.username.data, password=form.password.data).first()
-        if not user:
-            return fail_msg("密码错误！")
+        user = g.user
         user.hash_password(form.password.data)
-        db.session.add(user)
         db.session.commit()
         return success_msg()
 

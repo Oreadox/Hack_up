@@ -37,14 +37,13 @@ class LoginForm(FlaskForm):
 
 
 class ChangePasswordForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Length(1, 32), Email()])
     old_password = StringField('Old_password', validators=[DataRequired(), Length(1, 32)])
     new_password = StringField('New_password', validators=[DataRequired(), Length(1, 32)])
     new_password2 = StringField('New_password2word', validators=[DataRequired(), Length(1, 32),EqualTo(new_password)])
 
-    def validate_email(self, field):
-        if User.query.filter_by(email=field.data).first():
-            g.error = fail_msg(msg='该用户不存在！')
+    def validate_old_password(self, field):
+        if not g.user.verify_password(field):
+            g.error = fail_msg(msg='密码错误！')
 
 
 class ForgetPasswordForm(FlaskForm):
