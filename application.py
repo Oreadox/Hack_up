@@ -2,7 +2,6 @@
 
 from app import api, app
 from app.api.authentication import SingUp, Login, ChangePassword, DeleteAccount, ForgetPassword, UserConfirm
-from app.email import send_email
 
 api.add_resource(Login, '/api/user/login/')
 api.add_resource(SingUp, '/api/user/signup/')
