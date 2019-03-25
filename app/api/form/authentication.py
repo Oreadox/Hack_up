@@ -47,6 +47,9 @@ class ChangePasswordForm(FlaskForm):
             g.error = fail_msg(msg='该用户不存在！')
 
 
+class ForgetPasswordForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Length(1, 32), Email()])
 
-
-
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            g.error = fail_msg(msg='该用户不存在！')

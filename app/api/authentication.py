@@ -5,7 +5,7 @@ from flask import g
 from ..models import User
 from .. import db, auth
 from ..message import fail_msg, success_msg
-from .form.authentication import SignupForm, LoginForm
+from .form.authentication import SignupForm, LoginForm, ForgetPasswordForm, ChangePasswordForm
 from ..email import send_email
 
 
@@ -55,7 +55,7 @@ class ChangePassword(Resource):
 
     @auth.login_required
     def put(self):
-        form = SignupForm()
+        form = ChangePasswordForm()
         if not form.validate_on_submit():
             return fail_msg(msg='输入错误！')
         if g.error:
@@ -70,7 +70,28 @@ class ChangePassword(Resource):
 
 
 class ForgetPassword(Resource):
-    '修改密码（需要邮箱已验证）'
+    '修改密码（需要邮箱已验证）[此处仅验证邮箱及发送邮件]'
+
+    def post(self):
+        form = ChangePasswordForm()
+        if not form.validate_on_submit():
+            return fail_msg(msg='输入错误！')
+        if g.error:
+            return g.error
+        send_email()  # 此处以后再修改
+        return success_msg(msg="邮件已发送")
+
+
+class ResetPassword(Resource):
+    '重置密码（从邮件中）'
+
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('id', type=str)
+
+    def get(self):
+        from flask import render_template
+        return render_template("")
 
     def put(self):
         pass
