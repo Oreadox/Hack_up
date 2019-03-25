@@ -12,6 +12,7 @@ class User(db.Model):
     username = db.Column(db.String(40), index=True, nullable=False)
     email = db.Column(db.String(40), nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
+    confirmed = db.Column(db.Boolean, default=False)
 
     def hash_password(self, password):
         self.password_hash = custom_app_context.encrypt(password)

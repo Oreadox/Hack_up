@@ -1,11 +1,12 @@
 # encoding: utf-8
 
-from flask_restful import Resource, reqparse, request
-from flask import g, make_response
+from flask_restful import Resource, reqparse, abort
+from flask import g
 from ..models import User
-from .. import db,auth
-from ..message import fail_msg,success_msg
-from .form.User import SignupForm,LoginForm
+from .. import db, auth
+from ..message import fail_msg, success_msg
+from .form.authentication import SignupForm, LoginForm
+from ..email import send_email
 
 
 class Login(Resource):
@@ -34,8 +35,9 @@ class SingUp(Resource):
             return fail_msg(msg='输入错误！')
         if g.error:
             return g.error
-        user = User(username=form.username.data,email=form.email.data)
+        user = User(username=form.username.data, email=form.email.data)
         user.hash_password(form.password.data)
+        send_email()  # 此处以后再修改
         db.session.add(user)
         db.session.commit()
         return success_msg()
@@ -47,16 +49,18 @@ class Logout(Resource):
     def get(self):
         pass
 
-class ChangePassword(Resource):
-    '修改密码'
 
+class ChangePassword(Resource):
+    '修改密码（需要原密码且已登录）'
+
+    @auth.login_required
     def put(self):
         form = SignupForm()
         if not form.validate_on_submit():
             return fail_msg(msg='输入错误！')
         if g.error:
             return g.error
-        user = User.query.filter_by(username=form.username.data,password=form.password.data).first()
+        user = User.query.filter_by(username=form.username.data, password=form.password.data).first()
         if not user:
             return fail_msg("密码错误！")
         user.hash_password(form.password.data)
@@ -65,10 +69,36 @@ class ChangePassword(Resource):
         return success_msg()
 
 
-@auth.login_required
+class ForgetPassword(Resource):
+    '修改密码（需要邮箱已验证）'
+
+    def put(self):
+        pass
+
+
+class UserConfirm(Resource):
+    '验证邮箱'
+
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('id', type=str)
+
+    def get(self):
+        data = self.parser.parse_args()
+        user = User.verify_auth_token(data.get('id'))
+        if not user:
+            abort(404)
+            return None
+        user.confirmed = True
+        db.session.commit()
+        return success_msg()
+
+
+
 class DeleteAccount(Resource):
     '删除账户'
 
+    @auth.login_required
     def delete(self):
         db.session.delete(g.user)
         db.session.commit()
