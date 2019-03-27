@@ -6,6 +6,7 @@ from flask_restful import Api
 from flask_cors import CORS
 from flask_mail import Mail
 from flask_wtf import CSRFProtect
+from flask_socketio import SocketIO
 from . import config
 
 app = Flask(__name__)
@@ -16,6 +17,7 @@ CORS(app)
 api = Api(app)
 mail=Mail(app)
 CSRFProtect(app)
+socketio = SocketIO(app)
 
 from app.models import User
 from flask import g
