@@ -7,10 +7,10 @@ from flask_cors import CORS
 from flask_mail import Mail
 from flask_wtf import CSRFProtect
 from flask_socketio import SocketIO
-from . import config
+from .config import FlaskConfig
 
 app = Flask(__name__)
-app.config.from_object(config)
+app.config.from_object(FlaskConfig)
 db = SQLAlchemy(app)
 auth = HTTPTokenAuth()
 CORS(app)
