@@ -1,10 +1,10 @@
 # encoding: utf-8
 from flask_restful import Resource, request
-import os, requests, json
-from .. import db
-from ..models import WechatUser as User
-from ..message import fail_msg
-from ..config import WechatProgramConfig as Config
+import requests, json
+from ... import db
+from ...model.wechat_app_models import WechatUser as User
+from ...message import fail_msg
+from ...config import WechatProgramConfig as Config
 
 
 class Login(Resource):

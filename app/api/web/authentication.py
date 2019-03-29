@@ -2,11 +2,11 @@
 
 from flask_restful import Resource, reqparse, abort
 from flask import g
-from ..models import User
-from .. import db, auth
-from ..message import fail_msg, success_msg
-from .form.authentication import SignupForm, LoginForm, ForgetPasswordForm, ChangePasswordForm
-from ..email import send_email
+from ...model.web_models import User
+from ... import db, auth
+from ...message import fail_msg, success_msg
+from .form.authentication import SignupForm, LoginForm, ChangePasswordForm
+from ...email import send_email
 
 
 class Login(Resource):

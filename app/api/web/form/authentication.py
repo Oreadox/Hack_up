@@ -2,10 +2,10 @@
 ###此文件仅用于表单/json数据验证
 from flask import g
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField
+from wtforms import StringField, PasswordField
 from wtforms.validators import Length, Email, Regexp, EqualTo, DataRequired
-from ...models import User
-from ...message import fail_msg
+from app.model.web_models import User
+from app.message import fail_msg
 
 
 class SignupForm(FlaskForm):
