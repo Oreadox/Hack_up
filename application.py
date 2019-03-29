@@ -12,7 +12,7 @@ api.add_resource(ForgetPassword, '/api/user/forget/')
 api.add_resource(ResetPassword, '/api/user/reset/')
 api.add_resource(UserConfirm, '/api/user/confirm/')
 api.add_resource(DeleteAccount, '/api/user/delete/')
-api.add_resource(WeChatLogin, '/api/user/WeChatLogin/')
+api.add_resource(WeChatLogin, '/api/user/wechatlogin/')
 
 if __name__ == '__main__':
     # app.run(debug=True)
