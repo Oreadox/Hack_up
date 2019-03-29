@@ -2,6 +2,7 @@
 
 import os
 
+use_web = True
 
 class FlaskConfig():
     DEBUG = True

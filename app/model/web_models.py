@@ -13,7 +13,8 @@ class User(db.Model):
     email = db.Column(db.String(40), nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     confirmed = db.Column(db.Boolean, default=False)
-    room_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    # room_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def hash_password(self, password):
         self.password_hash = custom_app_context.encrypt(password)
@@ -37,6 +38,5 @@ class User(db.Model):
         user = User.query.get(data['id'])
         return user
 
-
-class Room(db.Model):
-    __tablename__ = 'rooms'
+# class Room(db.Model):
+#     __tablename__ = 'rooms'
