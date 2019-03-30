@@ -37,7 +37,7 @@ class SingUp(Resource):
             return g.error
         user = User(username=form.username.data, email=form.email.data)
         user.hash_password(form.password.data)
-        send_email()  # 此处以后再修改
+        # send_email()  # 此处以后再修改
         db.session.add(user)
         db.session.commit()
         return success_msg()
@@ -75,7 +75,7 @@ class ForgetPassword(Resource):
             return fail_msg(msg='输入错误！')
         if g.error:
             return g.error
-        send_email()  # 此处以后再修改
+        # send_email()  # 此处以后再修改
         return success_msg(msg="邮件已发送")
 
 
