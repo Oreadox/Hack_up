@@ -20,6 +20,8 @@ class Login(Resource):
             return g.error
         user = User.query.filter_by(username=form.username_or_email.data).first() or \
                User.query.filter_by(email=form.username_or_email.data).first()
+        if not user:
+            return fail_msg("该用户不存在！")
         if not user.verify_password(password=form.password.data):
             return fail_msg("密码错误！")
         token = user.generate_auth_token()
