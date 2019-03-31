@@ -7,7 +7,7 @@ if use_web:
     # web端(默认运行）
     from app.api.web.authentication import SingUp, Login, ChangePassword, DeleteAccount, ForgetPassword, \
         UserConfirm, ResetPassword
-
+    from app.api.web.room import SetUp, Join, ChangeRoomPassword, Leave, Status
     api.add_resource(Login, '/api/user/login/')
     api.add_resource(SingUp, '/api/user/signup/')
     api.add_resource(ChangePassword, '/api/user/change/')
@@ -15,6 +15,11 @@ if use_web:
     api.add_resource(ResetPassword, '/api/user/reset/')
     api.add_resource(UserConfirm, '/api/user/confirm/')
     api.add_resource(DeleteAccount, '/api/user/delete/')
+    api.add_resource(SetUp, '/api/room/setup/')
+    api.add_resource(Join, '/api/room/join/')
+    api.add_resource(ChangeRoomPassword, '/api/room/change/')
+    api.add_resource(Leave, '/api/room/leave/')
+    api.add_resource(Status, '/api/room/status/')
 else:
     # 微信小程序
     from app.api.wechat.authentication import Login, ReName
