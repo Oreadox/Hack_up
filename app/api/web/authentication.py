@@ -18,8 +18,8 @@ class Login(Resource):
             return fail_msg(msg='输入错误！')
         if g.error:
             return g.error
-        user = User.query.filter_by(username=form.username_or_email.data).first() or \
-               User.query.filter_by(email=form.username_or_email.data).first()
+        user = User.query.filter_by(username=form.username.data).first() or \
+               User.query.filter_by(email=form.username.data).first()
         if not user:
             return fail_msg("该用户不存在！")
         if not user.verify_password(password=form.password.data):

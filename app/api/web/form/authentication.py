@@ -28,10 +28,10 @@ class SignupForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    username_or_email = StringField('Username', validators=[DataRequired(), Length(1, 32)])
+    username = StringField('Username', validators=[DataRequired(), Length(1, 32)])
     password = StringField('Password', validators=[DataRequired(), Length(1, 32)])
 
-    def validate_username_or_email(self, field):
+    def validate_username(self, field):
         if not (User.query.filter_by(email=field.data).first()
                 and User.query.filter_by(username=field.data).first()):
             g.form_error = fail_msg(msg='该用户不存在！')

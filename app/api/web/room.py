@@ -82,7 +82,7 @@ class Leave(Resource):
     # 房主离开为删除房间
 
     @auth.login_required
-    def post(self):
+    def get(self):
         if not g.user.joined_room:
             return fail_msg('你未在任何一个房间')
         room = g.user.roommember.room

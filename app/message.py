@@ -12,8 +12,8 @@ def fail_msg(msg):
 
 def success_msg(msg='成功！', total_page='', **data):
     message = OrderedDict()
-    if data: message['data'] = data
     message['status'] = 1
     message['message'] = msg
+    if data: message['data'] = data
     if total_page: message['total_page'] = total_page
     return message
