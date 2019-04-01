@@ -70,7 +70,7 @@ class ChangeRoomPassword(Resource):
             return fail_msg('未加入房间！')
         room = g.user.roommember.room
         if room.owner_id != g.user.id:
-            return fail_msg('只有房主才能更改密码')
+            return fail_msg('只有房间创建者才能更改密码')
         room.room_password = password
         db.session.commit()
         return success_msg('密码更改成功！')
@@ -79,7 +79,7 @@ class ChangeRoomPassword(Resource):
 class Leave(Resource):
     '离开房间'
 
-    # 房主离开为删除房间
+    # 房间创建者离开为删除房间
 
     @auth.login_required
     def get(self):
@@ -88,6 +88,7 @@ class Leave(Resource):
         room = g.user.roommember.room
         if g.user.id == room.owner_id:
             for rm in room.roommembers:
+                rm.user.joined_room = False
                 db.session.delele(rm)
             db.session.delete(room)
         else:

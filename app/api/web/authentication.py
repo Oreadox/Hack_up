@@ -5,7 +5,7 @@ from flask import g
 from ...model.web_models import User
 from ... import db, auth
 from ...message import fail_msg, success_msg
-from .form.authentication import SignupForm, LoginForm, ChangePasswordForm
+from .form.authentication import SignupForm, LoginForm, ChangePasswordForm, ForgetPasswordForm
 from ...email import send_email
 
 
@@ -72,11 +72,12 @@ class ForgetPassword(Resource):
     '修改密码（需要邮箱已验证）[此处仅验证邮箱及发送邮件]'
 
     def post(self):
-        form = ChangePasswordForm()
+        form = ForgetPasswordForm()
         if not form.validate_on_submit():
             return fail_msg(msg='输入错误！')
         if g.error:
             return g.error
+        user = User.query.filter_by(username=form.username.data, email=form.email.data).first()
         # send_email()  # 此处以后再修改
         return success_msg(msg="邮件已发送")
 

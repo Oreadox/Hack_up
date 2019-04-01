@@ -8,6 +8,8 @@ if use_web:
     from app.api.web.authentication import SingUp, Login, ChangePassword, DeleteAccount, ForgetPassword, \
         UserConfirm, ResetPassword
     from app.api.web.room import SetUp, Join, ChangeRoomPassword, Leave, Status
+    from app.api.web.socket import RoomData
+
     api.add_resource(Login, '/api/user/login/')
     api.add_resource(SingUp, '/api/user/signup/')
     api.add_resource(ChangePassword, '/api/user/change/')
@@ -20,6 +22,7 @@ if use_web:
     api.add_resource(ChangeRoomPassword, '/api/room/change/')
     api.add_resource(Leave, '/api/room/leave/')
     api.add_resource(Status, '/api/room/status/')
+    socketio.on_namespace(RoomData())
 else:
     # 微信小程序
     from app.api.wechat.authentication import Login, ReName
@@ -29,4 +32,4 @@ else:
 
 if __name__ == '__main__':
     # app.run(debug=True)
-    socketio.run(app)
+    socketio.run(app, host='0.0.0.0')

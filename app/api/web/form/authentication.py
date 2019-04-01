@@ -48,7 +48,14 @@ class ChangePasswordForm(FlaskForm):
 
 
 class ForgetPasswordForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(1, 32),
+                                                   Regexp('^[A-Za-z0-9\\u4e00-\u9fa5_]+$', 0,
+                                                          '不能输入特殊字符(除下划线)')])
     email = StringField('Email', validators=[DataRequired(), Length(1, 32), Email()])
+
+    def validate_username(self, field):
+        if User.query.filter_by(username=field.data).first():
+            g.error = fail_msg(msg='该用户不存在！')
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
