@@ -13,20 +13,20 @@ class RoomData(Namespace):
         time = str(datetime.now())
         emit('time', {'time': time})
 
-    def on_connect(self):
-        send('连接成功')
-
     def on_join_room(self, data):
         token = ''
         if data.get('token'):
             token = data.get('token')[7:]
         else:
             emit('join_room', {'message': '需要token'})
+            return None
         user = User.verify_auth_token(token)
         if not user:
             emit('join_room', {'message': 'token失效'})
+            return None
         if not user.joined_room:
             emit('join_room', {'message': '未加入房间'})
+            return None
         room = user.roommember.room
         join_room(room='room_' + str(room.id))
         join_room(room=user.id)

@@ -100,7 +100,7 @@ class Leave(Resource):
 
 
 class Status(Resource):
-    '用户及房间信息'
+    '当前用户及房间信息'
 
     @auth.login_required
     def get(self):
@@ -110,4 +110,19 @@ class Status(Resource):
         if user.joined_room:
             room = user.roommenber.room
             data['room'] = room.get_data()
+            data['roommates'] = []
+            for rm in room.roommembers:
+                data['roommates'].append(rm.get_data())
+        return success_msg(data=data)
+
+
+class GetRoom(Resource):
+    '获取房间信息'
+
+    @auth.login_required
+    def post(self):
+        request_data = request.get_json(force=True)
+        room_id = request_data.get('room_id')
+        room = Room.query.filter_by(id=room_id).first()
+        data = room.get_data()
         return success_msg(data=data)

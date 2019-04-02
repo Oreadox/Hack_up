@@ -41,9 +41,9 @@ class User(db.Model):
 
     def get_data(self):
         data = {}
+        data['user_id'] = self.id
         data['username'] = self.username
         data['email'] = self.email
-        data['room_size'] = self.room_size
         data['confirmed'] = self.confirmed
         data['registration_time'] = self.registration_time
         data['joined_room'] = self.joined_room
@@ -78,3 +78,10 @@ class RoomMember(db.Model):
     join_time = db.Column(db.DateTime, default=datetime.now)
     room = db.relationship('Room', backref='roommembers', foreign_keys=room_id)
     user = db.relationship('User', backref='roommember', foreign_keys=user_id)
+
+    def get_data(self):
+        data = {}
+        data['user_id'] = self.user_id
+        data['join_time'] = self.join_time
+        data['username'] = self.user.username
+        return data

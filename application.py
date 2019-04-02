@@ -7,7 +7,7 @@ if use_web:
     # web端(默认运行）
     from app.api.web.authentication import SingUp, Login, ChangePassword, DeleteAccount, ForgetPassword, \
         UserConfirm, ResetPassword
-    from app.api.web.room import SetUp, Join, ChangeRoomPassword, Leave, Status
+    from app.api.web.room import SetUp, Join, ChangeRoomPassword, Leave, Status, GetRoom
     from app.api.web.socket import RoomData
 
     api.add_resource(Login, '/api/user/login/')
@@ -22,6 +22,7 @@ if use_web:
     api.add_resource(ChangeRoomPassword, '/api/room/change/')
     api.add_resource(Leave, '/api/room/leave/')
     api.add_resource(Status, '/api/room/status/')
+    api.add_resource(GetRoom, '/api/room/roomdata/')
     socketio.on_namespace(RoomData())
 else:
     # 微信小程序

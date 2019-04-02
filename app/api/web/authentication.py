@@ -78,6 +78,8 @@ class ForgetPassword(Resource):
         if g.error:
             return g.error
         user = User.query.filter_by(username=form.username.data, email=form.email.data).first()
+        if not user:
+            return fail_msg('该用户不存在！')
         # send_email()  # 此处以后再修改
         return success_msg(msg="邮件已发送")
 
