@@ -59,14 +59,20 @@ class Room(db.Model):
     room_password = db.Column(db.String(128), nullable=False)
     count = db.Column(db.Integer, nullable=False, default=1)
     create_time = db.Column(db.DateTime, default=datetime.now)
+    notice = db.Column(db.Text, default='')
 
     def get_data(self):
         data = {}
         data['room_id'] = self.id
         data['room_name'] = self.room_name
+        data['owner_id'] = self.owner_id
         data['room_size'] = self.room_size
         data['count'] = self.count
         data['create_time'] = self.create_time
+        return data
+
+    def get_name(self):
+        data = [rm.user.username for rm in self.roommembers]
         return data
 
 

@@ -76,6 +76,20 @@ class ChangeRoomPassword(Resource):
         return success_msg('密码更改成功！')
 
 
+class ChangeNotice(Resource):
+    '更改房间公告(小黑板)'
+
+    @auth.login_required
+    def post(self):
+        request_data = request.get_json(force=True)
+        if not request_data.get('notice'):
+            return fail_msg('内容不能为空')
+        room = g.user.roommember.room
+        room.notice = request_data.get('notice')
+        db.session.commit()
+        return success_msg()
+
+
 class Leave(Resource):
     '离开房间'
 
@@ -125,4 +139,5 @@ class GetRoom(Resource):
         room_id = request_data.get('room_id')
         room = Room.query.filter_by(id=room_id).first()
         data = room.get_data()
+        data['roommates'] = room.get_name()
         return success_msg(data=data)

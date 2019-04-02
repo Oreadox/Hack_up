@@ -45,13 +45,6 @@ class SingUp(Resource):
         return success_msg()
 
 
-class Logout(Resource):
-    '登出'
-
-    def get(self):
-        pass
-
-
 class ChangePassword(Resource):
     '修改密码（需要原密码且已登录）'
 
@@ -115,7 +108,6 @@ class UserConfirm(Resource):
         user.confirmed = True
         db.session.commit()
         return success_msg()
-
 
 
 class DeleteAccount(Resource):

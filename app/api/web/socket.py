@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-from flask_socketio import emit, Namespace, send, join_room
+from flask_socketio import emit, Namespace, send, join_room, leave_room
 from datetime import datetime
 from ...model.web_models import User
 
@@ -38,11 +38,27 @@ class RoomData(Namespace):
             msg.append(dict)
         emit('last_data', msg)
 
+    def on_leave_room(self, data):
+        user_id = data.get('user_id')
+        if not user_id:
+            emit('leave_room', {'message': '需要用户id'})
+            return None
+        user = User.query.filter_by(id=user_id).first()
+        if not user:
+            emit('leave_room', {'message': '该用户不存在'})
+            return None
+        room = user.roommember.room
+        leave_room(room='room_' + str(room.id))
+        leave_room(room=user.id)
+
     def on_message(self, data):
         user_id = data.get('user_id')
         message = data.get('message')
         time = str(datetime.now())
         user = User.query.filter_by(id=user_id).first()
+        if not user:
+            emit('leave_room', {'message': '该用户不存在'})
+            return None
         msg = {
             'user_id': user_id,
             'message': message,
