@@ -6,18 +6,20 @@ from flask_restful import Api
 from flask_cors import CORS
 from flask_mail import Mail
 from flask_wtf import CSRFProtect
-from . import config
+from flask_socketio import SocketIO
+from .config import FlaskConfig
 
 app = Flask(__name__)
-app.config.from_object(config)
+app.config.from_object(FlaskConfig)
 db = SQLAlchemy(app)
 auth = HTTPTokenAuth()
-CORS(app)
+CORS(app, supports_credentials=True)
 api = Api(app)
 mail=Mail(app)
 CSRFProtect(app)
+socketio = SocketIO(app)
 
-from app.models import User
+from app.model.web_models import User
 from flask import g
 
 @app.before_request
