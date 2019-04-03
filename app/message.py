@@ -10,7 +10,7 @@ def fail_msg(msg):
     return message
 
 
-def success_msg(msg='成功！', total_page='', **data):
+def success_msg(msg='成功！', total_page='', data={}):
     message = OrderedDict()
     message['status'] = 1
     message['message'] = msg

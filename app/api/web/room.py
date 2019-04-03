@@ -48,7 +48,7 @@ class Join(Resource):
             return fail_msg('房间不存在！')
         if room.room_password != room_password:
             return fail_msg('密码错误！')
-        if room.count >= room.size:
+        if room.count >= room.room_size:
             return fail_msg('房间已满')
         room.count = room.count + 1
         g.user.joined_room = True
@@ -61,14 +61,14 @@ class ChangeRoomPassword(Resource):
     '更改房间密码'
 
     @auth.login_required
-    def post(self):
+    def put(self):
         request_data = request.get_json(force=True)
         password = request_data.get('new_password')
         if not password:
             return fail_msg('密码不能为空！')
         if not g.user.joined_room:
             return fail_msg('未加入房间！')
-        room = g.user.roommember.room
+        room = g.user.roommember[0].room
         if room.owner_id != g.user.id:
             return fail_msg('只有房间创建者才能更改密码')
         room.room_password = password
@@ -80,14 +80,14 @@ class ChangeNotice(Resource):
     '更改房间公告(小黑板)'
 
     @auth.login_required
-    def post(self):
+    def put(self):
         request_data = request.get_json(force=True)
         if not request_data.get('notice'):
             return fail_msg('内容不能为空')
-        room = g.user.roommember.room
+        room = g.user.roommember[0].room
         room.notice = request_data.get('notice')
         db.session.commit()
-        return success_msg()
+        return success_msg(msg='更改成功')
 
 
 class Leave(Resource):
@@ -96,17 +96,17 @@ class Leave(Resource):
     # 房间创建者离开为删除房间
 
     @auth.login_required
-    def get(self):
+    def delete(self):
         if not g.user.joined_room:
             return fail_msg('你未在任何一个房间')
-        room = g.user.roommember.room
+        room = g.user.roommember[0].room
         if g.user.id == room.owner_id:
             for rm in room.roommembers:
                 rm.user.joined_room = False
                 db.session.delele(rm)
             db.session.delete(room)
         else:
-            db.session.delete(g.user.roommember)
+            db.session.delete(g.user.roommember[0])
             room.count = room.count - 1
         g.user.joined_room = False
         db.commit()
@@ -122,7 +122,7 @@ class Status(Resource):
         user = g.user
         data['user'] = user.get_data()
         if user.joined_room:
-            room = user.roommenber.room
+            room = user.roommenber[0].room
             data['room'] = room.get_data()
             data['roommates'] = []
             for rm in room.roommembers:
@@ -133,9 +133,13 @@ class Status(Resource):
 class GetRoom(Resource):
     '获取房间信息'
 
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('room_id', type=int)
+
     @auth.login_required
-    def post(self):
-        request_data = request.get_json(force=True)
+    def get(self):
+        request_data = self.parser.parse_args()
         room_id = request_data.get('room_id')
         room = Room.query.filter_by(id=room_id).first()
         data = room.get_data()

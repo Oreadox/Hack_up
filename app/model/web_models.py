@@ -72,7 +72,7 @@ class Room(db.Model):
         return data
 
     def get_name(self):
-        data = [rm.user.username for rm in self.roommembers]
+        data = [rm.user[0].username for rm in self.roommembers]
         return data
 
 
@@ -89,5 +89,5 @@ class RoomMember(db.Model):
         data = {}
         data['user_id'] = self.user_id
         data['join_time'] = self.join_time
-        data['username'] = self.user.username
+        data['username'] = self.user[0].username
         return data
