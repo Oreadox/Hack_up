@@ -2,7 +2,7 @@
 
 from flask_socketio import emit, Namespace, send, join_room, leave_room
 from datetime import datetime
-from ...model.web_models import User
+from app.models import User
 
 
 class RoomData(Namespace):

@@ -1,9 +1,9 @@
 # encoding: utf-8
 from flask_restful import Resource, reqparse, abort, request
 from flask import g, jsonify
-from ...model.web_models import Room, User, RoomMember
-from ...message import success_msg, fail_msg
-from ... import db, auth
+from app.models import Room, User, RoomMember
+from app.message import success_msg, fail_msg
+from app import db, auth
 
 
 class RoomData(Resource):

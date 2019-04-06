@@ -1,12 +1,12 @@
 # encoding: utf-8
 
-from flask_restful import Resource, reqparse, abort
+from flask_restful import Resource, reqparse, abort, request
 from flask import g
-from ...model.web_models import User, Room
-from ... import db, auth
-from ...message import fail_msg, success_msg
+from app.models import User, Room
+from app import db, auth
+from app.message import fail_msg, success_msg
 from .form.user import SignupForm, LoginForm, ChangePasswordForm, ForgetPasswordForm
-from ...email import send_email
+from app.email import send_email
 
 
 class UserData(Resource):
@@ -44,12 +44,13 @@ class UserData(Resource):
     def put(self):
         '修改用户信息(除密码)'
         user = g.user
-        data = self.parser.parse_args()
+        data = request.get_json(force=True)
         user.username = data.get('username') if data.get('username') else user.username
         user.birthday = data.get('birthday') if data.get('birthday') else user.birthday
         user.individuality = data.get('individuality') if data.get('individuality') else user.individuality
         user.gender = data.get('gender') if data.get('gender') else user.gender
         db.session.commit()
+        return success_msg()
 
     @auth.login_required
     def delete(self):

@@ -1,6 +1,6 @@
 # encoding: utf-8
-from .. import db
-from ..config import FlaskConfig
+from app import db
+from app.config import FlaskConfig
 from passlib.apps import custom_app_context
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired, BadSignature
@@ -14,7 +14,7 @@ class User(db.Model):
     email = db.Column(db.String(40), nullable=False)
     birthday = db.Column(db.Date)
     individuality = db.Column(db.String(128))
-    gender = room_size = db.Column(db.SmallInteger)
+    gender = db.Column(db.SmallInteger)
     password_hash = db.Column(db.String(128), nullable=False)
     confirmed = db.Column(db.Boolean, default=False)
     registration_time = db.Column(db.DateTime, default=datetime.now)

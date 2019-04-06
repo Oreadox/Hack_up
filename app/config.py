@@ -2,7 +2,6 @@
 
 import os
 
-use_web = True
 use_mysql = True
 base_dir = os.path.abspath(os.path.dirname(__file__))
 class FlaskConfig():
@@ -31,9 +30,3 @@ class FlaskConfig():
     BLOG_MAIL_SENDER = MAIL_USERNAME
     WTF_CSRF_CHECK_DEFAULT = False
     WTF_CSRF_ENABLED = False
-
-
-class WechatProgramConfig():
-    appid = os.environ.get('appid')
-    secret = os.environ.get('appSecret')
-    # access_token = os.environ.get('access_token')
