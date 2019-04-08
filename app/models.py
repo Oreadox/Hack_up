@@ -12,10 +12,11 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(40), index=True, nullable=False)
     email = db.Column(db.String(40), nullable=False)
-    birthday = db.Column(db.Date)
+    password_hash = db.Column(db.String(128), nullable=False)
+    birthday = db.Column(db.String(40))  # 前端说得弄string
     individuality = db.Column(db.String(128))
     gender = db.Column(db.SmallInteger)
-    password_hash = db.Column(db.String(128), nullable=False)
+    icon = db.Column(db.SmallInteger)
     confirmed = db.Column(db.Boolean, default=False)
     registration_time = db.Column(db.DateTime, default=datetime.now)
     joined_room = db.Column(db.Boolean, default=False)
@@ -92,5 +93,5 @@ class RoomMember(db.Model):
         data = {}
         data['user_id'] = self.user_id
         data['join_time'] = self.join_time
-        data['username'] = self.user[0].username
+        data['username'] = self.user.username
         return data

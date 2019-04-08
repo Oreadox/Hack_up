@@ -11,7 +11,7 @@ class RoomData(Namespace):
         user = User.verify_auth_token(token)
         err = ''
         if not user:
-            message = {'message': 'token失效'}
+            err = {'message': 'token失效'}
         return user, err
 
     def on_get_time(self, msg):
@@ -40,7 +40,7 @@ class RoomData(Namespace):
         for rm in room.roommembers:
             dict = {}
             dict['user_id'] = rm.user.id
-            ##还没写完
+            ## 还没写完
             msg.append(dict)
         emit('last_data', msg)
 
@@ -88,3 +88,15 @@ class RoomData(Namespace):
         }
         room = user.roommember[0].room
         emit('message', msg, room='room_' + str(room.id))
+
+    def on_action(self, data):
+        token = data.get('token')
+        if not token:
+            emit('join_room', {'message': '需要token'})
+            return None
+        user, err = self.verify_token(token)
+        if err:
+            emit('on_message', err)
+            return None
+        room = user.roommember[0].room
+        emit('action', {'data': data.get('data')}, room='room_' + str(room.id))

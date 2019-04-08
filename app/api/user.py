@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 from flask_restful import Resource, reqparse, abort, request
-from flask import g
+from flask import g, jsonify
 from app.models import User, Room
 from app import db, auth
 from app.message import fail_msg, success_msg
@@ -19,12 +19,12 @@ class UserData(Resource):
         user = g.user
         data['user'] = user.get_data()
         if user.joined_room:
-            room = user.roommenber[0].room
+            room = user.roommember[0].room
             data['room'] = room.get_data()
             data['roommates'] = []
             for rm in room.roommembers:
                 data['roommates'].append(rm.get_data())
-        return success_msg(data=data)
+        return jsonify(success_msg(data=data))
 
     def post(self):
         '新建用户'
