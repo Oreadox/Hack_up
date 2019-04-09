@@ -79,7 +79,7 @@ class RoomData(Resource):
         db.session.delete(room)
         user.joined_room = False
         db.session.coomit()
-        return success_msg()
+        return success_msg(msg='房间删除成功！')
 
 
 class Join(Resource):

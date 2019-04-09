@@ -11,7 +11,7 @@ class RoomData(Namespace):
         user = User.verify_auth_token(token)
         err = ''
         if not user:
-            err = {'message': 'token失效'}
+            err = {'error': 'token失效'}
         return user, err
 
     def on_get_time(self, msg):
@@ -23,14 +23,14 @@ class RoomData(Namespace):
     def on_join_room(self, data):
         token = data.get('token')
         if not token:
-            emit('join_room', {'message': '需要token'})
+            emit('join_room', {'error': '需要token'})
             return None
         user, err = self.verify_token(token)
         if err:
             emit('join_room', err)
             return None
         if not user.joined_room:
-            emit('join_room', {'message': '未加入房间'})
+            emit('join_room', {'error': '未加入房间'})
             return None
         room = user.roommember[0].room
         join_room(room='room_' + str(room.id))
@@ -47,7 +47,7 @@ class RoomData(Namespace):
     def on_leave_room(self, data):
         token = data.get('token')
         if not token:
-            emit('join_room', {'message': '需要token'})
+            emit('leave_room', {'error': '需要token'})
             return None
         # user_id = data.get('user_id')
         user, err = self.verify_token(token)
@@ -68,7 +68,7 @@ class RoomData(Namespace):
     def on_message(self, data):
         token = data.get('token')
         if not token:
-            emit('join_room', {'message': '需要token'})
+            emit('message', {'error': '需要token'})
             return None
         user, err = self.verify_token(token)
         if err:
@@ -92,7 +92,7 @@ class RoomData(Namespace):
     def on_action(self, data):
         token = data.get('token')
         if not token:
-            emit('join_room', {'message': '需要token'})
+            emit('action', {'error': '需要token'})
             return None
         user, err = self.verify_token(token)
         if err:
