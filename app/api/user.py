@@ -45,7 +45,11 @@ class UserData(Resource):
         '修改用户信息(除密码)'
         user = g.user
         data = request.get_json(force=True)
-        user.username = data.get('username') if data.get('username') else user.username
+        if data.get('username'):
+            username = data.get('username')
+            if User.query.filter(User.username == username, User.id != g.user.id).all():
+                return fail_msg(msg='该用户名已存在！')
+            user.username = username
         user.birthday = data.get('birthday') if data.get('birthday') else user.birthday
         user.individuality = data.get('individuality') if data.get('individuality') else user.individuality
         user.gender = data.get('gender') if data.get('gender') else user.gender

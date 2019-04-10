@@ -35,7 +35,7 @@ class RoomData(Namespace):
         room = user.roommember[0].room
         join_room(room='room_' + str(room.id))
         join_room(room=user.id)
-        emit('join_room', {'user_id': user.id})
+        # emit('join_room', {'user_id': user.id})
         msg = []
         for rm in room.roommembers:
             dict = {}
