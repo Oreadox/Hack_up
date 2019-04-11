@@ -53,8 +53,8 @@ class User(db.Model):
         data['joined_room'] = self.joined_room
         return data
 
-    def __del__(self):
-        db.session.close()
+    # def __del__(self):
+    #     db.session.close()
 
 
 class Room(db.Model):
@@ -82,8 +82,8 @@ class Room(db.Model):
         data = [rm.user[0].username for rm in self.roommembers]
         return data
 
-    def __del__(self):
-        db.session.close()
+    # def __del__(self):
+    #     db.session.close()
 
 
 class RoomMember(db.Model):
@@ -103,5 +103,5 @@ class RoomMember(db.Model):
         data['username'] = self.user.username
         return data
 
-    def __del__(self):
-        db.session.close()
+    # def __del__(self):
+    #     db.session.close()
