@@ -36,12 +36,17 @@ class RoomData(Namespace):
         join_room(room='room_' + str(room.id))
         join_room(room=user.id)
         # emit('join_room', {'user_id': user.id})
-        msg = []
+        msg = {}
+        msg['current_user_data'] = {}
+        msg['current_user_data']['user_id'] = user.id
+        msg['current_user_data']['username'] = user.username
+        msg['room_data'] = room.get_data().copy()
+        msg['room_data']['notice'] = room.notice
+        msg['roommates'] = []
         for rm in room.roommembers:
-            dict = {}
-            dict['user_id'] = rm.user.id
-            ## 还没写完
-            msg.append(dict)
+            dict = rm.get_data().copy()
+            dict['action'] = rm.action
+            msg['roommates'].append(dict)
         emit('last_data', msg)
 
     def on_leave_room(self, data):
@@ -99,4 +104,5 @@ class RoomData(Namespace):
             emit('on_message', err)
             return None
         room = user.roommember[0].room
-        emit('action', {'data': data.get('data')}, room='room_' + str(room.id))
+        user.roommember[0].action = data.get('action')
+        emit('action', {'action': data.get('action')}, room='room_' + str(room.id))

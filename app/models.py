@@ -88,7 +88,7 @@ class RoomMember(db.Model):
     join_time = db.Column(db.DateTime, default=datetime.now)
     room = db.relationship('Room', backref='roommembers', foreign_keys=room_id)
     user = db.relationship('User', backref='roommember', foreign_keys=user_id)
-    action = db.Column(db.String(20))
+    action = db.Column(db.String(8))
 
     def get_data(self):
         data = {}
