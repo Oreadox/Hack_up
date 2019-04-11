@@ -3,8 +3,7 @@
 from flask_script import Manager
 from flask_migrate import Migrate,MigrateCommand
 from app import app,db
-from app.model.web_models import User, Room, RoomMember
-from app.model.wechat_app_models import WechatUser
+from app.models import User, Room, RoomMember
 from app.config import use_mysql
 
 manage = Manager(app)

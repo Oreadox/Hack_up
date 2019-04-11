@@ -19,7 +19,7 @@ mail=Mail(app)
 CSRFProtect(app)
 socketio = SocketIO(app)
 
-from app.model.web_models import User
+from app.models import User
 from flask import g
 
 @app.before_request

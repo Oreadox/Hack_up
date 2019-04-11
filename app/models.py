@@ -1,6 +1,6 @@
 # encoding: utf-8
-from .. import db
-from ..config import FlaskConfig
+from app import db
+from app.config import FlaskConfig
 from passlib.apps import custom_app_context
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired, BadSignature
@@ -13,6 +13,10 @@ class User(db.Model):
     username = db.Column(db.String(40), index=True, nullable=False)
     email = db.Column(db.String(40), nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
+    birthday = db.Column(db.String(40))  # 前端说得弄string
+    individuality = db.Column(db.String(128))
+    gender = db.Column(db.SmallInteger)
+    icon = db.Column(db.SmallInteger)
     confirmed = db.Column(db.Boolean, default=False)
     registration_time = db.Column(db.DateTime, default=datetime.now)
     joined_room = db.Column(db.Boolean, default=False)
@@ -84,10 +88,11 @@ class RoomMember(db.Model):
     join_time = db.Column(db.DateTime, default=datetime.now)
     room = db.relationship('Room', backref='roommembers', foreign_keys=room_id)
     user = db.relationship('User', backref='roommember', foreign_keys=user_id)
+    action = db.Column(db.String(8))
 
     def get_data(self):
         data = {}
         data['user_id'] = self.user_id
         data['join_time'] = self.join_time
-        data['username'] = self.user[0].username
+        data['username'] = self.user.username
         return data
