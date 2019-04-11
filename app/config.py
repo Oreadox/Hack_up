@@ -20,6 +20,8 @@ class FlaskConfig():
     SQLALCHEMY_DATABASE_URI = DB_URI
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+    SQLALCHEMY_POOL_SIZE = 50
+    SQLALCHEMY_MAX_OVERFLOW = 50
     MAIL_SERVER = os.environ.get('MAIL_SERVER') or 'smtp.163.com'
     MAIL_PORT = os.environ.get('MAIL_PORT') or 465 or 994
     # MAIL_USE_TLS = True
