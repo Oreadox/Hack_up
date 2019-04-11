@@ -19,6 +19,8 @@ class RoomData(Resource):
         request_data = self.parser.parse_args()
         room_id = request_data.get('room_id')
         room = Room.query.filter_by(id=room_id).first()
+        if not room:
+            return fail_msg(msg='该房间不存在')
         data = room.get_data()
         data['roommates'] = room.get_name()
         return success_msg(data=data)

@@ -15,16 +15,24 @@ db = SQLAlchemy(app)
 auth = HTTPTokenAuth()
 CORS(app, supports_credentials=True)
 api = Api(app)
-mail=Mail(app)
+mail = Mail(app)
 CSRFProtect(app)
 socketio = SocketIO(app)
 
 from app.models import User
 from flask import g
 
+
 @app.before_request
 def before_request():
-    g.error= ''
+    g.error = ''
+
+
+@app.after_request
+def after_request(resp):
+    db.session.close()
+    return resp
+
 
 @auth.verify_token
 def verify_token(token):
