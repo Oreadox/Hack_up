@@ -6,7 +6,7 @@ use_mysql = True
 base_dir = os.path.abspath(os.path.dirname(__file__))
 class FlaskConfig():
     DEBUG = True
-    SECRET_KEY = "S83rQ53gC4vdarcIAvY89Ky4"
+    SECRET_KEY = os.environ.get('SECRET_KEY') or "S83rQ53gC4vdarcIAvY89Ky4"
     DB_URI = ''
     if use_mysql is True:
         HOST = '127.0.0.1'
