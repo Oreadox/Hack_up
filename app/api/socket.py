@@ -22,6 +22,7 @@ class RoomData(Namespace):
         emit('time', {'time': time})
 
     def on_join_room(self, data):
+        '加入房间'
         token = data.get('token')
         if not token:
             emit('join_room', {'error': '需要token'})
@@ -54,6 +55,7 @@ class RoomData(Namespace):
         db.session.close()
 
     def on_leave_room(self, data):
+        '离开房间'
         token = data.get('token')
         if not token:
             emit('leave_room', {'error': '需要token'})
@@ -70,6 +72,7 @@ class RoomData(Namespace):
         db.session.close()
 
     def on_message(self, data):
+        '聊天信息'
         token = data.get('token')
         if not token:
             emit('message', {'error': '需要token'})
@@ -92,6 +95,7 @@ class RoomData(Namespace):
         db.session.close()
 
     def on_action(self, data):
+        '用户动作'
         token = data.get('token')
         if not token:
             emit('action', {'error': '需要token'})

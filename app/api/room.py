@@ -1,7 +1,7 @@
 # encoding: utf-8
-from flask_restful import Resource, reqparse, abort, request
+from flask_restful import Resource, reqparse, request
 from flask import g, jsonify
-from app.models import Room, User, RoomMember
+from app.models import Room, RoomMember
 from app.message import success_msg, fail_msg
 from app import db, auth
 
@@ -23,7 +23,7 @@ class RoomData(Resource):
             return fail_msg(msg='该房间不存在')
         data = room.get_data()
         data['roommates'] = room.get_name()
-        return success_msg(data=data)
+        return jsonify(success_msg(data=data))
 
     @auth.login_required
     def post(self):
