@@ -1,9 +1,10 @@
 # 云端学院
 
-- 前端仓库地址:[https://github.com/zhongjialiang/hack-week](https://github.com/zhongjialiang/hack-week)
-- 后端仓库地址:[https://github.com/yangchen29/Hack_up](https://github.com/yangchen29/Hack_up)
+- 前端仓库地址: [https://github.com/zhongjialiang/hack-week](https://github.com/zhongjialiang/hack-week)
+- 后端仓库地址: [https://github.com/yangchen29/Hack_up](https://github.com/yangchen29/Hack_up)
 
 ### 环境变量
+- SECRET_KEY: 密钥
 - MAIL_SERVER: 邮箱服务器地址
 - MAIL_PORT: 邮箱服务器端口
 - MAIL_USE_TLS: 邮箱服务器是否使用TLS
