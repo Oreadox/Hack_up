@@ -67,6 +67,7 @@ class RoomData(Resource):
         elif (data.get('room_name') or data.get('room_password') or data.get('room_size')):
             return fail_msg('非创建者不能修改重要信息')
 
+    @auth.login_required
     def delete(self):
         '房间创建者删除房间'
         user = g.user
