@@ -13,6 +13,9 @@
 - MAIL_PASSWORD: 邮箱授权码
 - BLOG_MAIL_SUBJECT_PREFIX: 邮件前缀
 
+### 依赖包安装
+- pip3 install -r requirements.txt
+
 ### 接口文档
 - [HTTP](https://github.com/yangchen29/Hack_up/blob/master/ApiDoc/ApiDoc_http.md)
 - [WebSocket](https://github.com/yangchen29/Hack_up/blob/master/ApiDoc/ApiDoc_websocket.md)
