@@ -48,6 +48,10 @@ class User(db.Model):
         data['user_id'] = self.id
         data['username'] = self.username
         data['email'] = self.email
+        data['icon'] = self.icon
+        data['individuality'] = self.individuality
+        data['birthday'] = self.birthday
+        data['gander'] = self.gender
         data['confirmed'] = self.confirmed
         data['registration_time'] = self.registration_time
         data['joined_room'] = self.joined_room

@@ -18,10 +18,11 @@ class UserData(Resource):
         data = {}
         user = g.user
         data['user'] = user.get_data()
+        data['room'] = {}
+        data['roommates'] = []
         if user.joined_room:
             room = user.roommember[0].room
             data['room'] = room.get_data()
-            data['roommates'] = []
             for rm in room.roommembers:
                 data['roommates'].append(rm.get_data())
         return jsonify(success_msg(data=data))
@@ -53,6 +54,7 @@ class UserData(Resource):
         user.birthday = data.get('birthday') if data.get('birthday') else user.birthday
         user.individuality = data.get('individuality') if data.get('individuality') else user.individuality
         user.gender = data.get('gender') if data.get('gender') else user.gender
+        user.icon = data.get('icon') if data.get('icon') else user.icon
         db.session.commit()
         return success_msg()
 

@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-from flask_socketio import emit, Namespace, send, join_room, leave_room
+from flask_socketio import emit, Namespace, join_room, leave_room
 from datetime import datetime
 from app.models import User
 from .. import db
@@ -22,6 +22,7 @@ class RoomData(Namespace):
         emit('time', {'time': time})
 
     def on_join_room(self, data):
+        '加入房间'
         token = data.get('token')
         if not token:
             emit('join_room', {'error': '需要token'})
@@ -39,7 +40,6 @@ class RoomData(Namespace):
         room = user.roommember[0].room
         join_room(room='room_' + str(room.id))
         join_room(room=user.id)
-        # emit('join_room', {'user_id': user.id})
         msg = {}
         msg['current_user_data'] = {}
         msg['current_user_data']['user_id'] = user.id
@@ -55,30 +55,24 @@ class RoomData(Namespace):
         db.session.close()
 
     def on_leave_room(self, data):
+        '离开房间'
         token = data.get('token')
         if not token:
             emit('leave_room', {'error': '需要token'})
             db.session.close()
             return None
-        # user_id = data.get('user_id')
         user, err = self.verify_token(token)
         if err:
             emit('leave_room', err)
             db.session.close()
             return None
-        # if not user_id:
-        #     emit('leave_room', {'message': '需要用户id'})
-        #     return None
-        # user = User.query.filter_by(id=user_id).first()
-        # if not user:
-        #     emit('leave_room', {'message': '该用户不存在'})
-        #     return None
         room = user.roommember[0].room
         leave_room(room='room_' + str(room.id))
         leave_room(room=user.id)
         db.session.close()
 
     def on_message(self, data):
+        '聊天信息'
         token = data.get('token')
         if not token:
             emit('message', {'error': '需要token'})
@@ -89,13 +83,8 @@ class RoomData(Namespace):
             emit('on_message', err)
             db.session.close()
             return None
-        # user_id = data.get('user_id')
         message = data.get('message')
         time = str(datetime.now())
-        # user = User.query.filter_by(id=user_id).first()
-        # if not user:
-        #     emit('leave_room', {'message': '该用户不存在'})
-        #     return None
         msg = {
             'user_id': user.id,
             'message': message,
@@ -106,6 +95,7 @@ class RoomData(Namespace):
         db.session.close()
 
     def on_action(self, data):
+        '用户动作'
         token = data.get('token')
         if not token:
             emit('action', {'error': '需要token'})
