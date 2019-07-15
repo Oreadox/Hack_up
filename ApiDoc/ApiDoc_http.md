@@ -15,10 +15,8 @@
         "message": "成功！"
         "data":{
             "user": {
-                "username": 用户名,
+                "username": 用户名(如果设置了),
                 "user_id": 用户id,
-                "email": 电子邮箱,
-                "confirmed": 邮箱是否已验证(布尔值),
                 "registration_time": 注册时间(datetime),
                 "joined_room": 是否已加入房间(布尔值),
                 "gander": 性别(1为男性，0位女性),
@@ -53,7 +51,7 @@
     
 
 ## POST
-创建用户（登录）
+创建用户&登录
 
 #### url
 - /api/user/current
@@ -63,15 +61,15 @@
 
 | args | nullable | type | remark   |
 |:------:|:------:|:------:|:------:|
-|    username    |    false    |    str   |    用户名    |
-|    email    |    false    |    str   |    邮箱      |
-|    password    |    false    |    str   |    密码      |
-|    password2    |    false    |    str   |    密码验证      |
+|    code    |    false    |    str   |    临时登录凭证    |
 
 #### return
     {
         "status": 1,
         "message": "成功!"
+        "data": {
+            "token": token
+        }
     }
     
     {
@@ -80,7 +78,7 @@
     } 
     
 ## PUT*
-修改用户相关信息(除密码)
+修改用户相关信息
 
 #### url
 - /api/user/current
@@ -129,125 +127,6 @@
         "status": 0,
         "message": 原因
     }    
-# token相关
-
-## POST
-生成token（登录）
-
-#### url
-- /api/user/token
-
-
-#### args
-
-| args | nullable | type | remark   |
-|:------:|:------:|:------:|:------:|
-|    username    |    false    |    str   |    用户名(邮箱也行）    |
-|    password    |    false    |    str   |    密码      |
-
-#### return
-    {
-        "token": token
-    }
-    
-    {
-        "status": 0,
-        "message": 原因
-    }    
-
-
-# 修改密码（已登录状态）
-需要原密码且已登录
-
-## PUT*
-
-#### url
-- /api/user/password
-
-
-#### args
-
-| args | nullable | type | remark   |
-|:------:|:------:|:------:|:------:|
-|    old_password    |    false    |    str   |    旧密码    |
-|    new_password    |    false    |    str   |    新密码      |
-|    new_password2    |    false    |    str   |    新密码验证      |
-
-#### return
-    {
-        "status": 1,
-        "message": "成功!"
-    }
-    
-    {
-        "status": 0,
-        "message": 原因
-    } 
-
-# 忘记密码(未登录状态)
-
-## POST
-仅发送邮件
-
-#### url
-- /api/user/forget
-
-
-#### args
-
-| args | nullable | type | remark   |
-|:------:|:------:|:------:|:------:|
-|    username    |    false    |    str   |    用户名    |
-|    email    |    false    |    str   |    邮箱    |
-
-#### return
-    {
-        "status": 1,
-        "message": "邮件已发送!"
-    }
-    
-    {
-        "status": 0,
-        "message": 原因
-    } 
-## PUT
-重置密码(邮箱点击链接)（还没写完）
-
-#### url
-- /api/user/forget
-
-
-#### args
-
-| args | nullable | type | remark   |
-|:------:|:------:|:------:|:------:|
-
-#### return
-
-# 邮箱相关
-验证邮箱
-
-## GET
-
-#### url
-- /api/user/email
-
-
-#### args
-
-再定
-
-#### return
-    {
-        "status": 1,
-        "message": "成功!"
-    }
-    
-    {
-        "status": 0,
-        "message": 原因
-    } 
-
 
 
 
