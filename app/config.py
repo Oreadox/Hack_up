@@ -32,3 +32,8 @@ class FlaskConfig():
     MAIL_SENDER = MAIL_USERNAME
     WTF_CSRF_CHECK_DEFAULT = False
     WTF_CSRF_ENABLED = False
+
+
+class WeChatConfig():
+    appid = os.environ.get('appid')
+    secret = os.environ.get('secret')

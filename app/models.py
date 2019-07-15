@@ -10,14 +10,16 @@ from datetime import datetime
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(40), index=True, nullable=False)
-    email = db.Column(db.String(40), nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
+    username = db.Column(db.String(40))
+    openid = db.Column(db.String(128), nullable=False, index=True)
+    unionid = db.Column(db.String(128), nullable=False)
+    # email = db.Column(db.String(40), nullable=False)
+    # password_hash = db.Column(db.String(128), nullable=False)
     birthday = db.Column(db.String(40))  # 前端说得弄string
     individuality = db.Column(db.String(128))
     gender = db.Column(db.SmallInteger)
     icon = db.Column(db.SmallInteger)
-    confirmed = db.Column(db.Boolean, default=False)
+    # confirmed = db.Column(db.Boolean, default=False)
     registration_time = db.Column(db.DateTime, default=datetime.now)
     joined_room = db.Column(db.Boolean, default=False)
 
@@ -47,12 +49,12 @@ class User(db.Model):
         data = {}
         data['user_id'] = self.id
         data['username'] = self.username
-        data['email'] = self.email
+        # data['email'] = self.email
         data['icon'] = self.icon
         data['individuality'] = self.individuality
         data['birthday'] = self.birthday
         data['gander'] = self.gender
-        data['confirmed'] = self.confirmed
+        # data['confirmed'] = self.confirmed
         data['registration_time'] = self.registration_time
         data['joined_room'] = self.joined_room
         return data
